@@ -1,0 +1,119 @@
+Python:
+
+Higher level, general purpose programming language known for its simple syntax and readability.
+
+3 Programming Paradigms:
+
+1. Procedural Programming
+
+2. Object Oriented Programming
+
+3. Functional Programming
+
+Procedural Programming:
+
+Follows a top down approach. One main function calls the subroutines or other functions to achieve a  task.
+
+Examples: C, Fortran, Pascal
+
+
+Object Oriented Programming:
+
+Real world components are modelled as objects.
+
+Any real world component has state and behavior.
+
+If person is a real world component, name and age are examples of state and speaking and walking are examples of behaviours.
+
+state-----data
+behaviour---method(function)
+
+Data and methods are encapsulated in a class.
+
+Instance of a class is called an object.
+
+Examples: C++, Java, C#
+
+Functional Programming:
+
+A function is treated as a value or expression.
+
+
+Functional programming supports:
+
+1. passing a function as an argument to another function.
+
+2. a function can return another function.
+
+3. anonymous functions (functions without a name).
+
+4.  Supports nested functions.
+
+Examples: Scala, Python, Groovy
+
+
+
+Rules for python variables:
+
+A variable must with a alphabet or underscore.
+A  variable can't start with a number.
+A variable name can only contain alphabets, numbers and _.
+Variables names are case sensitive.
+
+Indentation:
+
+Refers to speaces at the beginning of a code line.
+
+Python uses indentation to indicate a block of code.
+The beginning of a block starts with : in the previous line.
+
+print(f"   ") ---- formatted string literal.
+
+def keyword is used to define a function in python
+
+def function_name(arguments):
+	--------
+	--------
+
+
+def sample_function(arguments):
+	...............
+	return first,second
+
+a,b=sample_function(.....)
+
+first will be assigned to a
+second will be assigned to b
+
+
+
+
+lambda argument_list:return value
+
+lambda a,b:a*b ----defines an anonymous function with two arguments a and b   and it returns a*b
+
+
+def  outer():
+    print("within outer function")
+    def inner():
+        print("within inner fucntion")
+        return 10
+    return inner
+
+
+
+
+1.  Within outer()  function, inner() function is defined.
+2. return inner returns the function itself without executing it.
+
+return inner------returns the inner()
+return inner()------executes the inner function and returns its result.
+
+
+
+None is  a special constant in Python that represents the absence of a value or a value that is not available.
+
+
+
+
+

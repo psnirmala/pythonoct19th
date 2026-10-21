@@ -1,0 +1,211 @@
+python3
+
+ print("Welcome to Pyspark Training");
+ 
+>>>x=8
+>>> y=10
+>>> x+y
+18
+>>> x="hello"
+>>> print(x)
+hello
+
+
+>>> a='this is a test'
+>>> print(a)
+
+>>> print(type(a))
+
+>>> a,b,c=23,"Apple",34.55
+
+>>> print(b)
+
+>>> print(c)
+
+>>> vegetables=["Potato","Brinjal","Tomato"]
+>>> x,y,z=vegetables
+>>> print(x)
+
+>>> print(y)
+>>> print(z)
+
+
+print("this is a test")
+
+x=10
+if x>5:
+    print("x is greater than 5")
+    print("-------------------")
+else:
+    print("x is less that or equal to 5")
+    print("*******************")
+
+ 
+
+third.py
+
+
+name=input("Enter your name ")
+x=23
+print("Welcome "+name)    
+print(f"Welcome {name} and value of x={x}")
+
+price=50
+tax=0.15
+print(f"Total price: {price+(price*tax)} ")
+
+second.py
+
+name=input("Enter your name ")
+x=23
+print("Welcome "+name)    
+print(f"Welcome {name} and value of x={x}")
+
+
+function_test.py
+
+def greet(name):
+    print(f"Welcome {name} ")
+
+def add(first,second):
+    return first+second
+
+
+greet("Arun")
+greet("Priya")    
+
+print(add(10,20))
+
+function_test_default_args.py
+
+def greet(name="Student"):
+    print(f"Welcome {name} ")
+
+
+def  printData(name,age,gender):
+    print(f"Name is {name}")
+    print(f"Age is {age}")
+    print(f"Gender is {gender}")
+
+
+greet("Arun")
+greet()    
+printData("Surya",23,"Male")
+
+printData(name="Priya",gender="Female",age=22)
+
+
+function_multiple_return_values.py
+
+def calculate(a,b):
+    return a+b,a-b
+
+
+sum,diff=calculate(10,4)
+print(f"Sum:{sum} Difference:{diff}")
+
+
+functional_prog_1.py
+
+
+def add(x,y):
+    return x+y
+
+def subtract(x,y):
+    return x-y
+
+def compute(x,y,f):
+    return f(x,y)
+
+sum=compute(10,5,add)
+diff=compute(20,12,subtract)
+print(f"Sum={sum} Difference={diff}")
+product=compute(5,4,lambda a,b:a*b)
+print(f"Product={product}")
+quotient=compute(20,4,lambda a,b:a/b)
+print(f"Quotient={quotient}")
+
+
+
+maximum=compute(10,8,lambda a,b:a if a>b else b)
+print(f"Maximum :{maximum}")
+
+
+lambda_ex.py
+
+is_even=lambda n: n%2==0
+print(is_even(10))
+print(is_even(7))
+
+square=lambda x:x*x
+
+print(f"square of 5 is {square(5)}")
+
+
+function_rtn_func.py
+
+
+def  outer():
+    print("within outer function")
+    def inner():
+        print("within inner fucntion")
+        return 10
+    return inner
+
+x=outer()
+print("outer function is invoked")
+print("going to invoke the returned function")
+y=x()       #invokes inner function
+print(f"value  of y {y}")
+
+
+def get_function(op):
+    if op=="add":
+        return lambda a,b:a+b
+    elif op=="subtract":
+        return lambda a,b:a-b
+    else:
+        return lambda  a,b:None
+
+operation=get_function("add")
+print(operation(10,2))
+operation=get_function("subtract")
+print(operation(10,2))
+
+operation=get_function("mulitply")
+print(operation(10,2))
+
+function_rtn_func_2.py
+
+def func1():
+    return lambda :"this is a test"
+
+x=func1()
+y=x()
+print(x)
+print(y)
+
+z=func1()()
+print(z)
+
+def func1():
+    return lambda :"this is a test"
+
+def func2():
+    return lambda x:f"this is returned from inner function {x}"
+
+x=func1()
+y=x()
+print(x)
+print(y)
+
+z=func1()()
+print(z)
+
+f=func2()
+s=f(10)
+t=f("test")
+print(s)
+print(t)
+
+print(func2()(90.34))
