@@ -1,0 +1,339 @@
+https://github.com/psnirmala/pythonoct19th
+
+
+>>> fruits=["banana","mango","date","apple","orange"]
+>>> print(fruits[0])
+
+>>> type(fruits)
+
+>>> fruits[0]="pine apple"
+>>> print(fruits)
+
+>>> fruits[0]
+
+>>> fruits[0:3]
+
+>>> fruits[1:3]
+['mango', 'date']
+>>> fruits[-1]
+'orange'
+>>> for fruit in fruits:
+     print(fruit)
+
+>>> for a in range(0,5):
+     print(a)
+
+>>> for a in range(5):
+     print(a)
+ 
+
+>>> for a in range(1,5):
+     print(a)
+
+>>> for a in range(1,5,2):
+    print(a)
+
+>>> for a in range(1,10,2):
+     print(a)
+
+
+>>> squares=[x**2 for x in numbers]
+>>>squares
+
+>>> squares=[x**2 for x in numbers if x%2==0]
+>>> squares
+
+>>> fruits=["banana","mango","date","apple","orange"]
+>>> loud_fruits=[f.upper() for f in fruits]
+>>> loud_fruits
+
+>>> list_a=[1,2,3,4,5,6]
+>>> list_b=[4,5,6,7,8,9]
+>>> common=[x for x in list_a  if x in list_b]
+>>> common
+
+>>> scores=[23,56,24,89,70,50,34]
+>>> results=["Pass" if s>=35 else "Fail" for s in scores]
+>>> results
+
+>>> set1={"apple","orange","grape","apple"}
+>>> set1
+
+set_test_1.py
+
+
+technologies=set()
+technologies.add("Java")
+technologies.add("Python")
+technologies.add("Hadoop")
+technologies.add("Python")
+
+print(technologies)
+
+for technology in technologies:
+    print(technology)
+
+
+set_test_2.py
+
+python_developers={"Arjun","Akash","Priya","Deva","Amar"}
+java_developers={"Amar","Suresh","Priya","Kumar","Sachin"}
+
+#union operator combines both to get a list of people across both groups
+
+print(python_developers.union(java_developers))
+
+# | symbol can also be used to denote union
+
+print(python_developers |java_developers)
+
+# intersection function or &  is used for common items from both
+
+print(python_developers & java_developers)
+
+print(python_developers.intersection(java_developers))
+
+
+dictionary_test_1.py
+
+
+employee={
+        "id":232222,
+        "name":"Arvind",
+        "designation":"Developer"
+}
+
+print(employee["id"])
+print(employee["name"])
+print(employee.get("dept"))
+
+
+dictionary_test_2.py
+
+
+employee={
+        "id":232222,
+        "name":"Arvind",
+        "designation":"Developer"
+}
+"""
+print(employee["id"])
+print(employee["name"])
+print(employee.get("dept"))
+"""
+
+for key in employee:
+    print(f"{key}-----{employee[key]}")
+
+
+
+dictionary_data_types.py
+
+employee={
+        "id":232222,
+        "name":"Arvind",
+        "designation":"Developer",
+        "skills":["Python","Pyspark","Kafka"],
+        "address":{
+            "location":"Hebbal",
+            "city":"Bangalore"
+        }
+}
+print(employee["skills"])
+print(employee["skills"][0])
+
+print(employee["address"]["city"])
+
+if "name" in employee:
+print("name  exists ")
+
+if "dept" not in employee:
+print("dept does not exist")
+
+
+
+odd_squares={x**2 for x in range(1,11) if x%2==1}
+print(odd_squares)
+odd_squares_with_key={n:n*n for n in range(1,11) if n%2==1}
+print(odd_squares_with_key)
+
+
+tuple1=(5,2,10,20)
+for a in tuple1:
+    print(a)
+tuple1=()
+print(tuple1)
+tuple2=("apple",)
+print(tuple2)
+
+
+
+#Student is the class
+class Student:
+   def __init__(self,name,age):
+    self.name=name
+    self.age=age
+
+#s1 is an object of class Student    
+s1=Student("Arvind",12)
+print(s1.name)
+print(s1.age)
+
+s2=Student("Surya",15)
+print(s2.name)
+print(s2.age)
+
+
+#Student is the class
+class Student:
+   def __init__(self,name,age):
+    self.name=name
+    self.age=age
+
+   def display(self):
+     print(f"Name: {self.name}")
+     print(f"Age: {self.age}")
+#s1 is an object of class Student    
+s1=Student("Arvind",12)
+s1.display()
+
+s2=Student("Surya",15)
+s2.display()
+
+class X:
+    #class variable i
+    i=10
+
+x1=X()
+x2=X()
+x3=X()
+print(x1.i)
+print(x2.i)
+print(x3.i)
+print(X.i)
+X.i=20
+print(X.i)
+x4=X()
+print(x4.i)
+print(x1.i)
+print(x2.i)
+print(x3.i)
+
+oops_composition.py
+
+class Address:
+    def __init__(self,location,city):
+        self.location=location
+        self.city=city
+    def  display(self):
+        print(f"Location {self.location}")    
+        print(f"City {self.city}")    
+
+class Person:
+    def __init__(self,name,age,gender,address):
+        self.name=name
+        self.age=age
+        self.gender=gender
+        self.address=address
+
+    def display(self):
+        print(f"Name: {self.name}")
+        print(f"Age: {self.age}")    
+        print(f"Gender: {self.gender}")
+        self.address.display()
+
+
+address1=Address("Hebbal","Bangalore")
+person1=Person("Arvind",27,"Male",address1)
+person1.display()
+
+
+oops_inheritance_1.py
+
+class Address:
+    def __init__(self,location,city):
+        self.location=location
+        self.city=city
+    def  display(self):
+        print(f"Location {self.location}")    
+        print(f"City {self.city}")    
+
+class Person:
+    def __init__(self,name,age,gender,address):
+        self.name=name
+        self.age=age
+        self.gender=gender
+        self.address=address
+
+    def display(self):
+        print(f"Name: {self.name}")
+        print(f"Age: {self.age}")    
+        print(f"Gender: {self.gender}")
+        self.address.display()
+
+
+
+class Employee(Person):
+    def __init__(self,name,age,gender,address,id):
+        super().__init__(name,age,gender,address)
+        self.id=id
+
+    def display(self):
+        super().display()
+        print(f"Employee id {self.id}")
+
+address1=Address("Hebbal","Bangalore")
+employee1=Employee("Arvind",27,"Male",address1,32225)
+employee1.display()
+
+
+
+
+Exercise:
+create a copy of oops_inheritance_1.py and rename it as oops_inheritance_2.py and make the following changes.    
+    Create a subclass of Employee called Manager  with an additional data member called department.
+    
+    Add  suitable constructor and display method.
+    
+    create an object of manager and invoke the display method.
+    
+
+class Manager(Employee):
+    def __init__(self,name,age,gender,address,id, dept):
+        super().__init__(name,age,gender,address,id)
+        self.dept = dept
+        
+
+    def display(self):
+        super().display()
+        print(f"Manager department is {self.dept}")
+
+
+address1=Address("Hebbal","Bangalore")
+manager1=Manager("Arvind",27,"Male",address1,32225, "Sales")
+manager1.display()
+
+class Employee:
+    def work(self):
+        print("Performing General work")
+
+class Developer(Employee):
+      def work(self):
+              print("Writing  code")
+class Accountant(Employee):
+      def work(self):
+              print("performs acccounting  ")
+
+def defineWork(employee):
+      employee.work()
+
+dev1=Developer()
+
+accountant1=Accountant()
+
+defineWork(dev1)
+defineWork(accountant1)
+
+
+
+

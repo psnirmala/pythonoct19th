@@ -1,0 +1,106 @@
+Collections are used to store collection of objects / elements.
+
+Common collections:
+
+1.List
+2.Set
+3.Dictionary
+4.Tuple
+
+List a built in mutable and ordered collection enclosed in [].
+
+numbers=[43,55,22,20,40]
+
+
+
+range is a function that generates a sequence of immutable integers.
+
+
+
+range(start,stop,step)
+
+start----optional (default -0)
+stop-----mandatory
+step-----optional(default -1)
+
+List Comprehension:
+
+Offers a shorter, cleaner syntax to create a list based on an existing collection, iterable or sequence.
+
+
+new_list=[expression for item in iterable if condition]
+
+Set:
+
+Unordered collection of unique elements.
+
+Unordered----The first added element may not be first element.
+Unique-------no duplicates
+
+Set elements are enclosed within {}.
+
+Dictionary:
+
+Collection of key value pairs.
+
+
+A dictionary can store strings, integers, lists  and  even other dictionaries.
+
+Tuple is a collection that is ordered and immutable.
+
+It is enclosed with ().
+
+tuple does not support tuple comprehension.
+
+Object Oriented Programming :
+
+1. Encapsulation----Bundle the data and methods together----creating a class
+2. Inheritance-------Creating a new class from an existing class (creating child from parent)
+3. Polymorphism-------the same method name behaving differently
+4. Data  Abstraction----Hiding implementation details behind public interfaces.
+
+A class defines blue print for an object.
+An Object is an instance  of a class.
+
+Constructor is a special function that initializes an object when it is created.
+In python a constructor is defined within the class with the name __init__.
+
+The first parameter to  the constructor is  the variable through which we can access the current object.
+Very commonly we name it as self.
+
+Instance Variables belong to individual objeccts.
+Class variables are shared through the class ie Class variables are common all objects of the class.
+
+
+Inheritance----"is a" relationship
+Composition----"has a" relationship
+
+class Address----class Person------Person has an Address----"has a"----one class contains an instance another
+class----Person class will have an instance of Address
+class Employee---class Person------Employee is a Person-----"is a" -----one class inherits another from class-----Employee class will inherit from  Person
+
+Manager is an Employee------"is a"-----inheritance
+
+Manager----sub  class of Employee------Employee is the Parent and Manager  is the child
+Employee-----super class of Manager and sub class of Person
+
+Person----name,age and  gender
+
+Employee inherits from Person------id,name,age,gender(name,age  and gender  are part of Person)
+
+Manager  inherits from Employee----id,name,age,gender and dept(id,name,age and gender are part of Employee)
+
+Polymorphism:
+
+One having multiple forms.
+
+A child class can provide its own implementation of a method inherited from its parent.
+
+
+
+
+
+
+
+
+
