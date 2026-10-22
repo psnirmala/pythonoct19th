@@ -1,0 +1,211 @@
+https://github.com/psnirmala/pythonoct19th
+
+python_mod_1.py
+
+import math
+print(math.sqrt(25))
+print(math.factorial(3))
+print(math.pi)
+
+
+python_mod_2.py
+
+import math as m
+print(m.sqrt(25))
+print(m.factorial(3))
+print(m.pi)
+
+
+from math import sqrt,factorial,pi
+print(sqrt(25))
+print(factorial(3))
+print(pi)
+
+caclulator.py
+
+def add(a,b):
+    return a+b
+
+def subtract(a,b):
+    return a-b
+    
+    
+usecalculator.py
+
+import calculator  as c
+print(c.add(10,2))
+print(c.subtract(10,3))
+
+
+
+usecalculator_1.py
+
+import sys
+sys.path.append("/home/student/pythontraining/utilities")
+import calculator  as c
+print(c.add(10,2))
+print(c.subtract(10,3))
+
+employee_app/employee.py
+
+class Employee:
+    def __init__(self,id,name):
+        self.id=id
+        self.name=name
+
+    def display(self):
+        print(f"Employee: {self.id} {self.name}")        
+
+
+employee_app/salary.py
+
+def calculate_salary(basic,bonus):
+    return basic+bonus
+    
+employee_app/__init__.py
+
+from .employee import Employee
+from .salary import calculate_salary
+
+
+import sys
+sys.path.append("/home/student/pythontraining")
+import employee_app
+from employee_app import Employee,calculate_salary
+
+emp=Employee(12111,"Arvind")
+emp.display()
+
+print(calculate_salary(40000,5000))
+
+try:
+    a=int(input("Enter numerator:  "))
+    b=int(input("Enter denominator: "))
+    result=a/b
+    print(result)
+except ZeroDivisionError:
+    print("Denominator can't be zero")    
+
+
+print("completing the program")
+
+
+
+
+    
+try:
+    a=int(input("Enter numerator:  "))
+    b=int(input("Enter denominator: "))
+    result=a/b
+    print(result)
+except ZeroDivisionError:
+    print("Denominator can't be zero")  
+except ValueError:
+    print("Invalid value ")      
+
+
+print("completing the program")
+
+
+file=None
+try:
+    file=open("/home/student/sample.txt")
+    print(file.read())
+except FileNotFoundError:
+    print("file not found")
+finally:
+    if file is not None:
+        file.close()
+        print("file closed")        
+
+student@ubuntu:~$ pip list
+
+ python3 -m venv /home/student/pythonenvironments/pandaenv
+ 
+ 
+  source pythonenvironments/pandaenv/bin/activate
+
+(pandaenv) student@ubuntu:~$ pip install pandas
+ 
+ (pandaenv) student@ubuntu:~$ pip list
+
+pandas_1.py
+
+import pandas as pd
+data={
+    "Name":["Arun","Arvind","Surya"],
+    "Marks":[90,87,92]
+}
+
+df=pd.DataFrame(data)
+print(df)
+
+
+print(df.to_string(index=False))
+
+import pandas as pd
+data={
+    "Name":["Arun","Arvind","Surya"],
+    "Marks":[90,87,92]
+}
+
+df=pd.DataFrame(data)
+#print(df.to_string(index=False))
+#print(df.head(2))
+#print(df.columns)
+#print(df["Name"])
+#print(df["Marks"]>=90)
+#print(df[df["Marks"]>=90])
+
+
+print("Total Marks:",df["Marks"].sum())
+print("Average Marks:",df["Marks"].mean())
+print("Minimum Marks:",df["Marks"].min())
+print("Maximum Marks:",df["Marks"].max())
+
+/home/student/pythontraining/dataset/employee.csv
+
+emp_id,name,designation,salary
+121444,Arvind,Developer,34000
+232255,Suresh,Accountant,30000
+323222,Amar,Architect,80000
+
+
+import pandas as pd
+
+df=pd.read_csv("/home/student/pythontraining/dataset/employee.csv")
+#print(df.to_string(index=False))
+sorted_df=df.sort_values(by="salary",ascending=False)
+print(sorted_df.to_string(index=False))
+)
+
+import pandas as pd
+
+df=pd.read_csv("/home/student/pythontraining/dataset/employee.csv")
+#print(df.to_string(index=False))
+sorted_df=df.sort_values(by="salary",ascending=False)
+#print(sorted_df.to_string(index=False))
+sorted_df.to_csv("/home/student/pythontraining/outputdataset/empout.csv",index=False)
+
+/home/student/pythontraining/dataset/student.json
+
+[
+{"rollno":2322,"name":"Rakesh","total_marks":420},
+{"rollno":2342,"name":"Amar","total_marks":470},
+{"rollno":2328,"name":"Deva","total_marks":320},
+{"rollno":2329,"name":"Suresh","total_marks":422}
+]
+
+
+import pandas as pd
+
+df=pd.read_json("/home/student/pythontraining/dataset/student.json")
+print(df.to_string(index=False))
+
+import pandas as pd
+
+df=pd.read_json("/home/student/pythontraining/dataset/student.json")
+#print(df.to_string(index=False))
+df1=df[df["total_marks"]>400]
+df1.to_csv("/home/student/pythontraining/outputdataset/highscores.csv",index=False)
+

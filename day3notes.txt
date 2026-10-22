@@ -1,0 +1,107 @@
+Module:
+
+Pythn   file containing python code such as functions, variables and classes that can be  reused in another python program.
+
+Built in modules: math,  random, os ,sys
+Third party modules: numpy, pandas, requests
+
+We can also define our own modules.
+
+
+
+
+
+
+
+
+/home/student/pythontraining/utilities
+	|
+	|______________________calculator.py
+
+/home/student/pythontraining/day3code
+	|
+	|______________________usecalculator.py
+
+Package:
+
+It is a directory that organizes related python modules into a logical structure.
+
+Module-------single .py file
+Package------directory containing related modules  and optionally subpackages
+
+/home/student/pythontraining/employee_app
+	|-------------__init__.py (package initializer)
+	|-------------employee.py
+	|_____________salary.py
+
+/home/student/pythontraining/day3code
+	|
+	|__use_employeeapp.py
+
+
+The __pycache__ folder is an automatically generated directory used by Python to store compiled bytecode(.pyc files).
+
+Its primary purpose is to increase module loading speed.
+
+Exception:
+
+Exception is a runtime error.
+
+Exceptions are handled using try except block.
+
+try:
+	code that may cause an exception
+except ex_type_1:
+	code to handle the exception
+except ex_type_2:
+	code to handle the exception
+
+finally:
+	code that will always execute irrespective of whether the  exception is generated or not.
+
+
+pip(python install package) is the standard package manager for python. It allows you to install, update 
+and  manage external python libraries that are not included in the standard python installation.
+
+python environment:
+
+A python environment is a setup that provides a python interpreter and libraries that are needed to run your application.
+
+It helps to manage dependendencies for different projects so that one project's library versions do not interfere with another project's requirements.
+
+Virtual Environment:
+
+An isolated environment created for a specific project. It can have its own installed packages.
+
+To change python interpreter in vs code
+
+Press ctrl+shift+p to open the pallete window--->python: select Interpreter->browse path->navigate to 
+environment's bin directory and select the python executable
+
+Pandas:
+
+Python library used for data manipulation, analytics and working with structured data like csv files, excel files, json data and etc.
+
+Dataframe is a two dimenstional tabular data structure with labeled rows and columns.
+
+Pandas is more suitable for smaller to medium dataset
+
+smaller------kilobytes to few mbs
+medium-------hundreds of mb to several GBs
+large--------tens of GBs to TB or more
+
+Pyspark is more suitable large dataset. Pyspark uses cluster of nodes to process multiple parts of the dataset at the same time instead of processing everything sequentially.
+
+
+Pyspark-----python api for a big data technology called Apache Spark.
+
+Apache Spark divides data into smaller parts called partitions and processes those partitions concurrently using available cpu cores or nodes available in the cluster.
+
+For example, when there is 100 GB of data and 20 nodes available in the cluster, each node can approximately process 5 GB of data.
+
+Pyspark performs distributed processing. Processing is distributed across multiple nodes in the cluster.
+
+ 
+
+
+
