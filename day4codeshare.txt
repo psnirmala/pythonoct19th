@@ -1,0 +1,176 @@
+https://github.com/psnirmala/pythonoct19th
+
+/home/student/pythontraining/dataset/employee_1.csv
+
+emp_id,name,designation,salary,dept_id
+121444,Arvind,Developer,34000,101
+232255,Suresh,Accountant,30000,102
+323222,Amar,Architect,80000,101
+323224,David,Accts Manager,70000,102
+
+/home/student/pythontraining/dataset/dept.json
+[
+    {"dept_id":101,"dept_name":"Systems"},
+    {"dept_id":102,"dept_name":"Accounts"}
+]
+
+
+import pandas as pd
+
+emp_df=pd.read_csv("/home/student/pythontraining/dataset/employee_1.csv")
+#print(df.to_string(index=False))
+dept_df=pd.read_json("/home/student/pythontraining/dataset/dept.json")
+merge_df=pd.merge(emp_df,dept_df,on="dept_id",how="inner")
+print(merge_df)
+merge_df_1=merge_df[["emp_id","name","dept_name"]]
+print(merge_df_1)
+
+
+
+
+import pandas as pd
+emp_df=pd.read_csv("/home/student/pythontraining/dataset/employee_1.csv")
+#print(df.to_string(index=False))
+dept_df=pd.read_json("/home/student/pythontraining/dataset/dept.json")
+left_join_df=pd.merge(emp_df,dept_df,on="dept_id",how="left")
+print(left_join_df)
+right_join_df=pd.merge(emp_df,dept_df,on="dept_id",how="right")
+print(right_join_df)
+full_join_df=pd.merge(emp_df,dept_df,on="dept_id",how="outer")
+print(full_join_df)
+
+
+/home/student/pythontraining/dataset/dept_1.json
+
+[
+    {"department_id":101,"dept_name":"Systems"},
+    {"department_id":102,"dept_name":"Accounts"},
+    {"department_id":104,"dept_name":"Logistics"}
+]
+
+pandas_6.py
+
+import pandas as pd
+
+emp_df=pd.read_csv("/home/student/pythontraining/dataset/employee_1.csv")
+#print(df.to_string(index=False))
+dept_df=pd.read_json("/home/student/pythontraining/dataset/dept_1.json")
+merge_df=pd.merge(emp_df,dept_df,left_on="dept_id",right_on="department_id",how="inner")
+print(merge_df)
+merge_df_1=merge_df[["emp_id","name","dept_name"]]
+print(merge_df_1)
+
+
+import pandas as pd
+
+emp_df=pd.read_csv("/home/student/pythontraining/dataset/employee_1.csv")
+#print(df.to_string(index=False))
+result=pd.pivot_table(emp_df,index="dept_id",values="emp_id",aggfunc='count')
+print(result)
+
+
+import pandas as pd
+
+emp_df=pd.read_csv("/home/student/pythontraining/dataset/employee_1.csv")
+#print(df.to_string(index=False))
+dept_df=pd.read_json("/home/student/pythontraining/dataset/dept_1.json")
+merge_df=pd.merge(emp_df,dept_df,left_on="dept_id",right_on="department_id",how="inner")
+print(merge_df)
+merge_df_1=merge_df[["emp_id","name","dept_name","salary"]]
+print(merge_df_1)
+result=pd.pivot_table(merge_df_1,index="dept_name",values="salary",aggfunc='sum')
+print(result)
+
+
+import pandas as pd
+df=pd.DataFrame({
+    "Date":pd.date_range("2026-10-01",periods=5,freq='D'),
+    "Sales":[3000,4000,2500,10000,5000]
+})
+print(df)
+print("Total Sales:",df["Sales"].mean())
+
+
+
+
+import pandas as pd
+df=pd.DataFrame({
+    "Date":pd.date_range("2026-10-01 08:00:00",periods=6,freq='h'),
+    "Temperature":[22,25,28,29,28,27]
+})
+print(df)
+
+print("Average Temperature:",df["Temperature"].mean())
+print("Maximum Temperature:",df["Temperature"].max())
+
+
+java -version
+
+ echo $JAVA_HOME
+ echo $SPARK_HOME
+ 
+ pyspark
+ 
+ >>> sc.appName
+ 
+ >>> rdd1=sc.textFile("/home/student/pythontraining/textdata/sample.txt")
+>>> rdd1.collect()
+
+>>> rdd1.getNumPartitions()
+
+>>> partitions=rdd1.glom().collect()
+>>> for index,records in enumerate(partitions):
+     print(f"Partition {index} : {records}")
+
+>>> rdd1=sc.textFile("/home/student/pythontraining/textdata/sample.txt")
+>>> rdd1.glom().collect()
+
+>>> rdd2=rdd1.repartition(3)
+>>> rdd2.glom().collect()
+
+>>> rdd1=sc.textFile("/home/student/pythontraining/textdata/sample.txt",minPartitions=4)
+>>> rdd1.glom().collect()
+
+
+>>> rdd1=sc.textFile("/home/student/pythontraining/textdata/*.txt")
+>>> rdd1.collect()
+
+
+>>> list1=[4,6,2,10,45,7]
+>>> rdd1=sc.parallelize(list1)
+>>> rdd1.collect()
+
+>>> rdd1.glom().collect()
+
+>>> rdd2=rdd1.map(lambda x:x*2)
+>>> rdd2.collect()
+
+
+>>> text_rdd=sc.textFile("/home/student/pythontraining/textdata/sample.txt")
+>>> trans_rdd=text_rdd.map(lambda line:line.upper())
+>>> trans_rdd.collect()
+
+>>> trans_rdd=text_rdd.map(lambda line:len(line))
+>>> trans_rdd.collect()
+
+
+student@ubuntu:~/pythontraining/textdata$ python3 -m venv /home/student/pythonenvironments/pysparkenv
+student@ubuntu:~/pythontraining/textdata$ source /home/student/pythonenvironments/pysparkenv/bin/activate
+
+ pip install pyspark
+ 
+ 
+pyspark_app_1.py
+
+
+from pyspark import SparkContext
+sc=SparkContext(appName="first-app",master="local[*]")
+rdd1=sc.textFile("/home/student/pythontraining/textdata/sample.txt")
+rdd2=rdd1.map(lambda line:line.upper())
+list1=rdd2.collect()
+for line in list1:
+    print(line)
+sc.stop()    
+
+
+

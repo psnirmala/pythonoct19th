@@ -1,0 +1,57 @@
+JVM-----Java Virtual Machine-----Converts java byte code(compiled code) into runtime instructions.
+
+Scala runs on JVM.
+
+Since spark is written in scala, you need a jvm to run it.
+
+For working with unstructured data, spark core apis are used.
+Spark core apis uses RDD-----Resilient Distributed Dataset
+
+For working with structured data like csv,json,avro,parquet and rdbms, it uses dataframes.
+
+RDD is the fundamental unit of data in Spark.
+
+
+
+
+R-----Resilient-------if data is lost,  it  can be recovered.
+D----Distributed----data is divided into partitions across multiple machines
+D----Dataset-------collection of data elements
+
+RDD is used to process large amounts of data across multiple machines in a cluster.
+
+glom()----groups all elements of each partition into a python list.
+
+python convention:
+
+variable or function
+
+location_of_office="4, 10 th Cross Street,Jogpalya, Ulsoor"
+def calculate_discount():
+	-----------
+
+
+lower case and words are separated with _.
+
+
+scala/java convention:
+
+follow lower camel case convention.
+
+The first letter will start with lowercase and subsequent words will start with upper case.
+
+calculateDiscount()
+locationOfOffice
+
+class RDD[T]:
+	def map(f:T->T1)->RDD[T1]
+}
+
+map----applies the parameter function to each element of the rdd and returns another rdd of transformed values.
+
+master-----url of the master server in the cluster.
+
+local[*]-----spark uses the local mode with all core cpus available in the machine.
+
+
+
