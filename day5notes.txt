@@ -1,0 +1,92 @@
+class RDD[T]:
+	def map(f:T->T1)->RDD[T1]
+	def  filter(f:T->bool)->RDD[T]
+}
+
+filter function applies the parameter function to each element of the rdd and will return an rdd of elements which return true for the parameter function.
+
+Predicate---- a function which returns a boolean value.
+
+The parameter to filter function is a predicate.
+
+Pair RDD is a special rdd where each element is a two element tuple.
+
+
+
+The first element of the tuple will be  used as key and the second element as value.
+
+Map Reduce contains 2 phases:
+
+1.map phase------sequence of transformations
+2.reduce phase----works on the output of map phase. performs aggregations like groupByKey, reduceByKey and etc.
+
+flatMap()-----map+flatten
+
+flatten-----converts a two dimensional data into one dimensional
+
+
+if the result of map is two dimensional,  the result of flatMap will be  one dimensional.
+
+
+Lazy execution:
+
+Till an action is requested, the creation of the rdd and transformations will be processed.
+
+Worker:
+
+A worker provides cpu,memory and storages resources  for a spark application.
+The workers run a spark application as distributed processes on a set of cluster nodes parallelly.
+
+cluster manager:
+
+It is also called the master.
+It manages the computing resources acorss a cluster of nodes.
+Spark uses the  cluster manager  to acquire resources for executing a job in the cluster.
+
+executor:
+
+Executor is a jvm that spark creates on each worker  node for an application.
+An  executor has the same life span as the application for which it is created.
+As soon as the application is completed, the respective executors(jvms) are terminated in the worker nodes.
+
+Driver Program:
+
+Application code that providdes the data processing logic that spark executes on the worker nodes.
+A scala/python/java  code which contains the spark code is an example of a driver program.
+A pyspark-shell is also an example of a driver program.
+
+Job:
+
+A job is a set of computations that spark performs to return results to the driver program.
+
+Each job contains one action and one or more transformations.
+
+
+Task:
+
+Task is the smallest unit of work that spark sends to an executor.
+
+Spark creates a  task per partition.
+
+Task represents a job's logic per partition.
+
+Shuffle:
+
+A shuffle redistributes data among the cluster of nodes.
+
+It is an expensive operation because it involves moving data data across the network.
+A shuffle may happen due to any of the following scenarions.
+
+1. When there is repartitioning
+2. When there is an aggregate operation based on a key----spark guarantees that all the data with the same key move to same partition during an aggregate operation.
+
+Stage:
+
+Stage is a collection of tasks. Spark splits a job into multiple stages.
+A stage may depend on another stage.
+
+When there is a shuffle, spark starts another stage because the data have moved from one node to another node and separe set of partitions are created  and so separate set of tasks are launced.
+
+
+
+

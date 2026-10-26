@@ -1,0 +1,130 @@
+https://github.com/psnirmala/pythonoct19th
+
+>>> trans_rdd.count()
+
+>>> trans_rdd.saveAsTextFile("/home/student/rdd-out-1/")
+
+>>> trans_rdd.getNumPartitions()
+>>> list1=[6,2,4,10,7,6,5]
+>>> rdd1=sc.parallelize(list1)
+>>> evenRdd=rdd1.filter(lambda n:n%2==0)
+>>> oddRdd=rdd1.filter(lambda n:n%2==1)
+>>> evenRdd.collect()
+>>> oddRdd.collect()
+
+
+>>> isEven=lambda  n:n%2==0
+>>> evenRdd=rdd1.filter(isEven)
+>>> evenRdd.collect()
+
+>>> squaredRdd=evenRdd.map(lambda n:n*n)
+>>> squaredRdd.collect()
+
+
+
+>>> rdd1.filter(lambda n:n%2==0).map(lambda n:n*n).collect()
+
+>> list1=[("a",5),("b",6),("a",3),("c",8),("b",4),("a",6)]
+>>> rdd1=sc.parallelize(list1)
+>>> rdd1.reduceByKey(lambda  x,y:x+y).collect(
+
+
+>>> groupedData=rdd1.groupByKey().collect()
+>>> for key,values in groupedData:
+      print(key,list(values))
+
+
+>>> rdd2=sc.parallelize([7,3,2,10,5,6])
+>>> def process(a,b):
+     print(f"processing {a}  with {b}")
+     return a+b
+
+>>> sum=rdd2.reduce(process)
+>>>sum
+
+
+
+>>> list1=[("a",5),("b",6),("a",3),("c",8),("b",4),("a",6)]
+>>> pairRdd1=sc.parallelize(list1)
+>>> pairRdd1.reduceByKey(process).collect()
+
+>>> list1=[7,8,2,4,6,7,9,10,1]
+>>> rdd1=sc.parallelize(list1).repartition(1)
+>>> rdd1.reduce(process)
+
+>>> rdd1=sc.parallelize([6,2,9,10,12])
+>>> rdd2=rdd1.map(lambda n:[n-1,n,n+1])
+>>> rdd2.collect()
+
+
+>>> rdd2=rdd1.flatMap(lambda n:[n-1,n,n+1])
+>>> rdd2.collect()
+
+>>> rdd1=sc.textFile("/home/student/pythontraining/textdata/second.txt")
+>>> rdd1.collect()
+
+>>> rdd11=rdd1.map(lambda line:line.split(" "))
+>>> rdd11.collect()
+
+>>> rdd12=rdd1.flatMap(lambda line:line.split(" "))
+>>> rdd12.collect()
+
+/home/student/pythontraining/textdata/words.txt
+
+the cat sat on the mat
+the aardvark sat  on the sofa
+she sells  the sea shells on the sea shore
+
+
+>>> linesRdd=sc.textFile("/home/student/pythontraining/textdata/words.txt")
+>>> linesRdd.collect()
+
+>>> wordsRdd=linesRdd.flatMap(lambda line:line.split(" "))
+>>> wordsRdd.collect()
+
+>>> wordOccurrenceRdd=wordsRdd.map(lambda word:(word,1))
+>>> wordOccurrenceRdd.collect()
+
+>>> wordCountRdd=wordOccurrenceRdd.reduceByKey(lambda x,y:x+y)
+>>> wordCountRdd.collect()
+
+
+wordcount.py
+
+from pyspark import SparkContext
+sc=SparkContext(appName="first-app",master="local[*]")
+rdd1=sc.textFile("/home/student/pythontraining/textdata/words.txt")
+word_count_rdd=rdd1.flatMap(lambda line:line.split(" ")).map(lambda word:(word,1)) \
+    .reduceByKey(lambda x,y:x+y)
+for key,value in word_count_rdd.collect():
+    print(key,value)
+
+
+Test.java
+
+class Test{
+        public static void main(String[] args) throws Exception{
+            System.out.println("wating for 20 secs");
+            Thread.sleep(20000);
+            System.out.println("wait is over");
+        }
+}
+
+
+ javac /home/student/pythontraining/day5code/Test.java 
+
+ javac /home/student/pythontraining/day5code/Test.java 
+
+
+http://localhost:4040
+
+>>> linesRdd=sc.textFile("/home/student/pythontraining/textdata/words.txt")
+>>> wordsRdd=linesRdd.flatMap(lambda line:line.split(" "))
+>>> wordOccurrenceRdd=wordsRdd.map(lambda word:(word,1))
+>>> wordCountRdd=wordOccurrenceRdd.reduceByKey(lambda x,y:x+y)
+
+A job will be visible in the spark context ui after executing the following statement:
+
+>>> wordCountRdd.collect()
+
+>>> wordOccurrenceRdd.getNumPartitions()
