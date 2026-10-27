@@ -1,0 +1,87 @@
+
+spark-submit:
+It is a command line tool used to execute the application outside the ide.
+
+
+
+	    |-----worker-1
+master------|-----worker-2
+	    |-----worker-3
+
+
+1. start the  master.
+
+open a new terminal tab and run the following command
+
+
+sudo /opt/spark/sbin/start-master.sh
+
+2. open the ui of cluster  through the url http://localhost:8080 and find the master url
+
+3.start worker-1
+
+open another terminal tab and run the following command.
+
+sudo /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker url-of-master
+
+4.  start two more works by repeating the same command in previous  step twice.
+
+5. Now you should see 3 worker nodes in the master ui.
+
+6. Run the wordcount application in the cluster.
+
+ spark-submit --master  spark://ubuntu:7077 /home/student/pythontraining/day5code/wordcount.py 
+
+
+Spark sql deals with structured data like csv,json,parquet,avro,rdbms and etc.
+
+Pyspark shell provides an implicit object called spark which is of type SparkSession.
+
+SparkSession object acts as an entrypoint for spark sql.
+
+spark.read------read is a property of type DataFrameReader 
+DataFrameReader contains methods like csv(),json() and etc to read from various datasources.
+
+dataframe.write----returns a DataFrameWriter  which contains methods like csv,json,option,format and etc.
+
+parquet format:
+
+It is a column oriented file format designed for efficent storage and processing of large datasets.
+
+id	name	designation
+23232	Amar	Developer
+23211	Deva	Architect
+12121	Suresh	Accountant
+
+
+row oriented format: ---- rows stored together
+
+(23232,Amar,Developer),(23211,Deva,Architect),(12121,Suresh,Accountant)
+
+RDBMS stores data in row oriented format.
+
+Will be useful when dealing with entire row data. And also wherever frequent updates, deletes and inserts are happening.
+
+Typical usecases:
+
+Banking Transactions
+Employee management systems
+online shopping
+
+
+column oriented format:-----columns are stored together
+
+(23232,23211,12121),(Amar,Deva,Suresh),(Developer,Architect,Accountant)
+
+When data is fetched from few columns rather than entire  row, column oriented format will be useful.
+
+select avg(salary) from employees;
+
+It can skip unneeded columns. More useful for when fetching is more frequent rather than update and delete.
+
+Examples: Parquet, ORC
+
+The default format while reading and writing in dataframes  is parquet.
+
+
+

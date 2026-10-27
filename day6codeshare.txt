@@ -1,0 +1,137 @@
+https://github.com/psnirmala/pythonoct19th
+
+ $echo $SPARK_HOME
+ 
+ $ spark-submit /home/student/pythontraining/day5code/wordcount.py
+ 
+ 
+from pyspark import SparkContext
+import time
+sc=SparkContext(appName="first-app")
+sc.setLogLevel("WARN")
+rdd1=sc.textFile("/home/student/pythontraining/textdata/words.txt")
+word_count_rdd=rdd1.flatMap(lambda line:line.split(" ")).map(lambda word:(word,1)).reduceByKey(lambda x,y:x+y)
+for key,value in word_count_rdd.collect():
+    print(key,value)
+time.sleep(5*60)
+print("application completed")
+
+
+
+ ps -ef|grep spark
+ 
+ 
+ $ sudo /opt/spark/sbin/start-master.sh 
+ 
+ linux password: $unshine!1
+ 
+ tail -f logfile
+ 
+ http://localhost:8080/
+ 
+sudo /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker url-of-master
+ 
+ spark-submit --master  spark://ubuntu:7077 /home/student/pythontraining/day5code/wordcount.py 
+
+ /home/student/structureddataset/users.json
+ 
+ {"name":"Alice", "pcode":"94304"}
+{"name":"Brayden", "age":30, "pcode":"94304"}
+{"name":"Carla", "age":19, "pcode":"10036"}
+{"name":"Diana", "age":46}
+{"name":"Étienne", "pcode":"94104"}
+
+>>> user_df=spark.read.json("/home/student/structureddataset/users.json")
+>>> user_df.show()
+
+>>> ordered_df=user_df.select("name","age","pcode")
+>>> ordered_df.show()
+
+>>> user_df.printSchema()
+>>> ordered_df.show(3)
+
+>>> ordered_df.count()
+
+>>> ordered_df.first()
+
+>>> ordered_df.take(2)
+
+>>> ordered_df.collect()
+
+>>> user_df.write.csv("/home/student/dataframe-out/csv-1")
+
+>>> user_df.write.option("header",True).csv("/home/student/dataframe-out/csv-2")
+
+>>> new_df=spark.read.option("header",True).csv("/home/student/dataframe-out/csv-2")
+>>> new_df.show()
+
+/home/student/structureddataset/employee.csv
+
+id,name,designation
+23322,Arvind,Developer
+23238,Surya,
+23229,Amar,
+
+ emp_df=spark.read.option("header",True).csv("/home/student/structureddataset/employee.csv")
+>>> emp_df.show()
+
+
+>>> emp_df_1=emp_df.filter(emp_df["designation"].isNull())
+>>> emp_df_1.show()
+
+
+>>> emp_df_1=emp_df.filter(emp_df["designation"].isNull()==False)
+>>> emp_df_1.show()
+
+>>> emp_df_1=emp_df.filter(emp_df["designation"].isNotNull())
+>>> emp_df_1.show()
+>>> emp_df_1=emp_df.fillna({"designation":"unknown"})
+>>> emp_df_1.show()
+
+>>> emp_df_1=emp_df.fillna({"designation":"unknown","name":"unavailable"})
+>>> emp_df_1.show()
+>>> c>>> user_df_1.show()
+
+>>> user_df_2=user_df.where("age>20")
+>>> user_df_2.show()
+
+
+>>> user_df_2=user_df.where("age>20").select("name","age")
+>>> user_df_2.show()
+
+>>> user_df_2=user_df.where("age>15").select("name","age").limit(2)
+>>> user_df_2.show()
+
+
+>>> user_df_2=user_df.where("age>15").select("name","age").orderBy("age")
+>>> user_df_2.show()
+
+
+>>> user_df_2=user_df.where("age>15").select("name","age").orderBy("age").limit(2)
+>>> user_df_2.show()
+
+
+>>> user_df_2=user_df.where("age>15").select("name","age").orderBy("age",ascending=False).limit(2)
+>>> user_df_2.show()
+
+>>> user_df_2.write.save("/home/student/dataframe-out/parquet-1")
+
+
+ cat /home/student/dataframe-out/parquet-1/part-00000-7bdbdd67-9f9f-4636-941b-9747c5d8ba4b-c000.snappy.parquet 
+
+
+$ source /home/student/pythonenvironments/pysparkenv/bin/activate
+$ pip install parquet-tools
+
+pysparkenv) student@ubuntu:~/pythontraining$ parquet-tools show /home/student/dataframe-out/parquet-1/part-00000-7bdbdd67-9f9f-4636-941b-9747c5d8ba4b-c000.snappy.parquet 
+
+(pysparkenv) student@ubuntu:~/pythontraining$ parquet-tools inspect /home/student/dataframe-out/parquet-1/part-00000-7bdbdd67-9f9f-4636-941b-9747c5d8ba4b-c000.snappy.parquet 
+
+
+>>> testDF=spark.read.load("/home/student/dataframe-out/parquet-1")
+>>> testDF.show()
+
+
+>>> testDF=spark.read.parquet("/home/student/dataframe-out/parquet-1")
+>>> testDF.show()
+
