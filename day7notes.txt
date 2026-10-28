@@ -1,0 +1,24 @@
+Avro  format:
+
+Avro is row based binary format which stores data and schema together.
+
+JDBC------Java Database Connectivity------api through which a java application can connect to an RDBMS.
+
+Using JDBC api, when a java app connects to the database , it needs to use the jdbc driver provided by the database vendor. The jdbc driver is in the form of a jar(java archive) file.
+
+
+Aggregation:
+
+Group by function is used pyspark for aggregation.
+
+
+
+agg() function is used to calculate aggregate statistics like sum,average,min,max and etc across an entire dataset or on groups of data.
+
+In user defined schema, each field is defined using StructField.
+
+The user defined type is defined using StructType.
+
+StructType is a collection of StructFields.
+
+

@@ -1,0 +1,226 @@
+https://github.com/psnirmala/pythonoct19th
+
+>> empDF=spark.read.format("csv").load("/home/student/structureddataset/employee.csv")
+>>> empDF.show()
+
+
+>>> empDF=spark.read.format("csv").option("header",True).load("/home/student/structureddataset/employee.csv")
+>>> empDF.show()
+
+
+>>> userDF=spark.read.format("json").load("/home/student/structureddataset/users.json")
+>>> userDF.show()
+
+sparksqltest1.py
+
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("test-sql-app")\
+    .appName("local[*]").getOrCreate()
+user_df=spark.read.json("/home/student/structureddataset/users.json")
+user_df.show()
+
+>>> print(pyspark.__version__)
+
+
+$ pyspark --packages org.apache.spark:spark-avro_2.13:4.2.0
+
+>>> userDF=spark.read.format("json").load("/home/student/structureddataset/users.json")
+>>> userDF.show()
+
+>>> userDF.select("name","pcode").write.format("avro").save("/home/student/dataframeout/avro-test-1")
+
+>>> avroDF=spark.read.format("avro").load("/home/student/dataframeout/avro-test-1")
+>>> avroDF.show()
+
+
+$ cat /home/student/dataframeout/avro-test-1/part-00000-856e5703-e735-4450-af12-69ba42f08680-c000.snappy.avro 
+
+https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.12.2/avro-tools-1.12.2.jar
+
+student@ubuntu:~/structureddataset$ java -jar ~/Downloads/avro-tools-1.12.2.jar tojson /home/student/dataframeout/avro-test-1/part-00000-856e5703-e735-4450-af12-69ba42f08680-c000.snappy.avro
+
+
+student@ubuntu:~/structureddataset$ java -jar ~/Downloads/avro-tools-1.12.2.jar getschema /home/student/dataframeout/avro-test-1/part-00000-856e5703-e735-4450-af12-69ba42f08680-c000.snappy.avro 
+
+sparksqltest2.py
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("test-sql-app")\
+    .appName("local[*]").getOrCreate()
+user_df=spark.read.json("/home/student/structureddataset/users.json")
+user_df.show()
+user_df.write.format("avro").save("/home/student/dataframeout/avro-test-2")
+
+$ spark-submit  --packages org.apache.spark:spark-avro_2.13:4.2.0 /home/student/pythontraining/day7code/sparksqltest2.py
+
+
+
+$ sudo apt install  mysql-server -y
+
+$ sudo mysql
+
+
+mysql> create database company;
+
+
+mysql> use company;
+
+mysql> ;
+
+
+mysql> insert into employee values(1001,"Rajiv","Developer");
+
+
+mysql> insert into employee values(1002,"Amar","Accountant");
+
+
+mysql> insert into employee values(1003,"Surya","Architect");
+
+
+mysql> select * from employee;
+
+
+mysql> create user 'sparkuser'@'localhost' identified by 'password123';
+
+
+mysql> grant all on company.* to 'sparkuser'@'localhost';
+
+
+mysql> exit$ mysql -u sparkuser -p
+
+mysql> use company;
+
+mysql> select * from employee;
+
+
+>>> exit()
+$ pyspark --packages com.mysql:mysql-connector-j:8.2.0
+
+>>> df=spark.read.format("jdbc").option("url","jdbc:mysql://localhost:3306/company").option("dbtable","employee").option("user","sparkuser").option("password","password123").option("driver","com.mysql.cj.jdbc.Driver").load()
+>>> df.show()
+
+
+Exercise:
+    
+    /home/student/pythontraining/emp.csv
+    
+    empid,name,designation,salary
+    1211,Arvind,Accountant,30000
+    3222,Deva,Developer,40000
+    2325,Suresh,Architect,70000
+    2325,Ramesh,Accountant,32000
+    1212,Arun,Accountant,32000
+    3223,David,Developer,41000
+    2326,Surya,Architect,72000
+    2327,Amar,Accountant,35000
+    1217,Akash,DBA,60000
+    3229,Priya,IT-Admin,40000
+    2321,Rakesh,DBA,70000
+    2325,Shreyas,IT-Admin,38000
+    
+    create a dataframe from this data.
+>>> emp_df=spark.read.option("header",True).csv("/home/student/pythontraining/emp.csv")
+>>> emp_df.show()
+
+    Write all developers with empid, name column in json format to /home/student/dataframeout/developers directory
+    
+     Write all accountants with empid, name column in csv format to /home/student/dataframeout/accountants directory 
+     Write all architect with empid, name column in parquet format to /home/student/dataframeout/architects directory 
+     using parquet-tools, view the content of parquet data
+     
+    
+ Write all dbas with empid, name column in avro format to /home/student/dataframeout/dbas directory 
+using avro-tools, view the content of this data
+
+ Write all IT-admins with empid, name column in jdbc format to a table called itadmins under company database in mysql.
+    from mysql prompt, view the content of the table itadmins.
+    
+    
+pyspark --packages spark-avro........,com.mysql............
+
+
+
+>>> empDF=spark.read.option("header",True).option("inferSchema",True).csv("/home/student/pythontraining/emp.csv")
+>>> empDF.printSchema()
+
+
+>>> empDF.groupBy("designation").count().show()
+
+from pyspark.sql.functions import *
+
+>>> empDF.groupBy("designation").agg(max("salary"),min("salary"),avg("salary")).show()
+
+    
+
+ >>> empDF.groupBy("designation").agg(max("salary").alias("Maximum Salary"),min("salary").alias("Minimum Salary"),avg("salary").alias("Average Salary")).show()
+
+ 
+ >>> empDF.groupBy("designation").agg(max("salary").alias("Maximum Salary"),min("salary").alias("Minimum Salary"),avg("salary").alias("Average Salary")).show()
+ 
+ 
+ 
+ /home/student/structureddataset/people.csv
+ 
+ pcode,lastName,firstName,age
+02134,Hopper,Grace,52
+,Turing,Alan,32
+94020,Lovelace,Ada,28
+87501,Babbage,Charles,49
+02134,Wirth,Niklaus,48
+
+/home/student/structureddataset/postalcodes.csv
+
+pcode,city,state
+02134,Boston,MA
+94020,Palo Alto,CA
+87501,Santa Fe,NM
+60645,Chicago,IL
+
+>>> peopleDF=spark.read.format("csv").option("header",True).load("/home/student/structureddataset/people.csv")
+>>> peopleDF.show()
+
+
+>>> postalCodeDF=spark.read.format("csv").option("header",True).load("/home/student/structureddataset/postalcodes.csv")
+>>> postalCodeDF.show()
+
+
+>>> joinDF=peopleDF.join(postalCodeDF,"pcode")
+>>> joinDF.show()
+
+>>> postalCodeDF=spark.read.format("csv").option("header",True).load("/home/student/structureddataset/postalcodes.csv")
+>>> peopleDF.show()
+
+
+>>> postalCodeDF.show()
+
+
+>>> innerjoinDF=peopleDF.join(postalCodeDF,peopleDF["pcode"]==postalCodeDF["postalcode"],"inner")
+>>> innerjoinDF.show()
+
+>>> innerjoinDF=peopleDF.join(postalCodeDF,peopleDF["pcode"]==postalCodeDF["postalcode"],"inner").drop(postalCodeDF["postalcode"])
+>>> innerjoinDF.show()
+
+>>> leftjoinDF=peopleDF.join(postalCodeDF,peopleDF["pcode"]==postalCodeDF["postalcode"],"left_outer").drop(postalCodeDF["postalcode"])
+>>> leftjoinDF.show()
+
+>>> rightjoinDF=peopleDF.join(postalCodeDF,peopleDF["pcode"]==postalCodeDF["postalcode"],"right_outer").drop(postalCodeDF["postalcode"])
+>>> rightjoinDF.show()
+
+
+>>> fulljoinDF=peopleDF.join(postalCodeDF,peopleDF["pcode"]==postalCodeDF["postalcode"],"full_outer").drop(postalCodeDF["postalcode"])
+>>> fulljoinDF.show()
+
+
+>>> empDF=spark.read.option("header",True).csv("/home/student/pythontraining/emp.csv")
+>>> empDF.show()
+
+>>> empDF.printSchema()
+
+
+>>> from pyspark.sql.types import *
+>>> empSchema=StructType([StructField("empid",IntegerType()),StructField("name",StringType()),StructField("designation",StringType()),StructField("salary",DoubleType())])
+>>> empDF=spark.read.option("header",True).schema(empSchema).csv("/home/student/pythontraining/emp.csv")
+>>> empDF.show()
+>>>empDF.printSchema()
+
