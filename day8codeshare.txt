@@ -1,0 +1,266 @@
+https://github.com/psnirmala/pythonoct19th
+
+https://app.fabric.microsoft.com/
+
+sparksqltest3.py
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("test-sql-app")\
+    .appName("local[*]").getOrCreate()
+df_employee=spark.read.option("header","true").format("csv").load("/home/student/pythontraining/exercise-1/emp.csv")
+df_employee.select("empid","name").filter("designation='Developer'").write.mode("overwrite").format("json").save("/home/student/dataframe-out/developers")
+
+df_employee.select("empid","name").filter("designation='Accountant'").write.mode("overwrite").format("csv").save("/home/student/dataframe-out/accountants")
+
+df_employee.select("empid","name").filter("designation='Architect'").write.mode("overwrite").format("parquet").save("/home/student/dataframe-out/architects")
+
+df_employee.select("empid","name").filter("designation='DBA'").write.mode("overwrite").format("avro").save("/home/student/dataframe-out/dbas")
+
+df_employee.select("empid","name").filter("designation='IT-Admin'").write \
+    .format("jdbc")\
+        .option("url","jdbc:mysql://localhost:3306/company")\
+        .option("dbtable","itadmins")\
+        .option("user","sparkuser")\
+        .option("password","password123")\
+        .option("driver","com.mysql.cj.jdbc.Driver")\
+        .mode("append")\
+        .save()
+
+>>> empDF.createTempView("employee")
+>>> spark.sql("select * from employee").show()
+>>> spark.sql("select * from employee where salary>40000").show()
+
+
+>>> min_salary=40000
+>>> result_df=spark.sql("select * from employee where salary>= :minimum_salary",args={"minimum_salary":min_salary})
+>>> result_df.show()
+
+>>> postalCodeDF.show()
+>>> peopleDF.show()
+
+ postalCodeDF.createOrReplaceTempView("postalcode")
+peopleDF.createOrReplaceTempView("people")
+
+>>> joinDF=spark.sql("select a.pcode,a.lastName,a.firstName,b.city,b.state from people as a,postalcode as b where a.pcode=b.postalcode")
+>>> joinDF.show()
+
+
+/home/student/structureddataset/emp.csv
+
+empid,name,deptid,location
+101,Arun,501,Bangalore
+102,Surya,502,Hyderabad
+103,Akash,501,Bangalore
+104,Ramesh,503,Mumbai
+
+/home/student/structureddataset/dept.json
+
+{"deptid":501,"department":"IT","location":"Bangalore"}
+{"deptid":502,"department":"HR","location":"Hyderabad"}
+{"deptid":501,"department":"IT","location":"Chennai"}
+{"deptid":503,"department":"Sales","location":"Mumbai"}
+
+>>> empDF=spark.read.option("header",True).csv("/home/student/structureddataset/emp.csv");
+>>> empDF.show()
+>>> deptDF=spark.read.json("/home/student/structureddataset/dept.json")
+>>> deptDF.show()
+>>> resultDF=empDF.join(deptDF,(empDF.deptid==deptDF.deptid) & (empDF.location==deptDF.location),"inner")
+>>> resultDF.show()
+
+>>> spark.sql("select   a.pcode,a.lastName,a.firstName,b.city,b.state from people a right join postalcode b on a.pcode=b.postalcode").show()
+
+>>> spark.sql("select   a.pcode,a.lastName,a.firstName,b.city,b.state from people a left join postalcode b on a.pcode=b.postalcode").show()
+
+>>> spark.sql("select   a.pcode,a.lastName,a.firstName,b.city,b.state from people a full outer join postalcode b on a.pcode=b.postalcode").show()
+
+
+stream1.py
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("structured-streaming-app-1").getOrCreate()
+stream_df=spark.readStream.format("text").load("/home/student/structureddataset/streamingdata/")
+streaming_query=stream_df.writeStream.format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+streaming_query.awaitTermination()
+
+
+from pyspark.sql import SparkSession
+import time
+spark=SparkSession.builder.appName("structured-streaming-app-1").getOrCreate()
+stream_df=spark.readStream.format("text").load("/home/student/structureddataset/streamingdata/")
+streaming_query=stream_df.writeStream.format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")
+
+
+csv_stream_1.py
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+import time
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1").getOrCreate()
+empSchema=StructType([StructField("empid",IntegerType()),StructField("name",StringType()),StructField("designation",StringType())])
+stream_df=spark.readStream.format("csv"). \
+    schema(empSchema). \
+    load("/home/student/structureddataset/csvstreamingdata/")
+streaming_query=stream_df.writeStream.format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")
+
+
+/home/student/structureddataset/1.csv
+
+1001,Arjun,Developer
+1002,Deva,Accountant
+
+
+/home/student/structureddataset/2.csv
+
+1003,Amar,Developer
+1004,David,Accountant
+1005,Priya,Architect
+
+
+
+/home/student/structureddataset/3.csv
+
+1006,Akash,Developer
+1007,Arjun,Accountant
+1008,Suresh,Architect
+
+
+csvstream_with_filename.py
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import input_file_name
+import time
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1").getOrCreate()
+empSchema=StructType([StructField("empid",IntegerType()),StructField("name",StringType()),StructField("designation",StringType())])
+stream_df=spark.readStream.format("csv"). \
+    schema(empSchema). \
+    load("/home/student/structureddataset/csvstreamingdata/")
+stream_df_with_filename=stream_df.withColumn("input_file",input_file_name())
+streaming_query=stream_df_with_filename.writeStream.  \
+    option("truncate",False).\
+    format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")
+
+
+csvstream_without_fullpath.py
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import input_file_name,regexp_extract
+import time
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1").getOrCreate()
+empSchema=StructType([StructField("empid",IntegerType()),StructField("name",StringType()),StructField("designation",StringType())])
+stream_df=spark.readStream.format("csv"). \
+    schema(empSchema). \
+    load("/home/student/structureddataset/csvstreamingdata/")
+stream_df_with_filename=stream_df.withColumn("input_file",regexp_extract(input_file_name(),r"([^/]+)$",1))
+streaming_query=stream_df_with_filename.writeStream.  \
+    option("truncate",False).\
+    format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")
+
+
+
+>>> empDF=spark.read.format("csv").option("header",True).option("inferSchema",True).option("sep","|").load("/home/student/structureddataset/emp.csv")
+>>> empDF.show()
+
+/home/student/structureddataset/emp1.csv
+
+empid|name|designation|salary
+1211|Arvind|Accountant|30000
+3222|Deva|Developer|40000
+2325|Suresh|Architect|70000
+2325|Ramesh|Accountant|32000
+1212|Arun|Accountant|32000
+3223|David|Developer|41000
+2326|Surya|Architect|72000
+2327|Amar|Accountant|35000
+1217|Akash|DBA|60000
+3229|Priya|IT-Admin|40000
+2321|Rakesh|DBA|70000
+2325|Shreyas|IT-Admin|38000
+
+
+>>> empSchema=StructType([StructField("empid",IntegerType()),StructField("name",StringType()),StructField("designation",StringType()),StructField("salary",DoubleType())])
+>>> empDF=spark.read.format("csv").option("header",True).option("sep","|").schema(empSchema).load("/home/student/structureddataset/emp1.csv")
+>>> empDF.show()
+
+/home/student/structureddataset/dept.json
+
+Exercise:
+
+
+Create a structured streaming application to read json files copied to the directory /home/student/structureddata/jsonstreaming in the below format.
+
+{"deptid":502,"department":"HR","location":"Hyderabad"}
+{"deptid":501,"department":"IT","location":"Chennai"}
+{"deptid":503,"department":"Sales","location":"Mumbai"}
+
+
+jsonstreaming_without_fullfilepath.py
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import input_file_name,regexp_extract
+import time
+spark=SparkSession.builder.appName("structured-streaming-json-app-1").getOrCreate()
+
+
+deptSchema=StructType([StructField("deptid",IntegerType()),StructField("department",StringType()),StructField("location",StringType())])
+stream_df=spark.readStream.format("json"). \
+    schema(deptSchema). \
+    load("/home/student/PythonPysparkTraining/StructuredDataSet/jsonStreamingData")
+
+stream_df_with_filename=stream_df.withColumn("input_file",regexp_extract(input_file_name(),r"([^/]+)$",1))
+
+streaming_query=stream_df_with_filename.writeStream.\
+    option("truncate",False).\
+    format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(3*60)
+streaming_query.stop()
+print("streaming query stopped")
+# streaming_query.awaitTermination()
+
+csvstream_withcheckpoint.py
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import input_file_name,regexp_extract
+import time
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1").getOrCreate()
+empSchema=StructType([StructField("empid",IntegerType()),StructField("name",StringType()),StructField("designation",StringType())])
+stream_df=spark.readStream.format("csv"). \
+    schema(empSchema). \
+    load("/home/student/structureddataset/csvstreamingdata/")
+stream_df_with_filename=stream_df.withColumn("input_file",regexp_extract(input_file_name(),r"([^/]+)$",1))
+streaming_query=stream_df_with_filename.writeStream.  \
+    option("truncate",False).\
+    option("checkpointLocation","/home/student/csv-checkpoint-1"). \
+    format("console")\
+ .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")

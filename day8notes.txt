@@ -1,0 +1,66 @@
+spark sql code using sql  statements:
+
+We  can directly write sql statements to interact with the data frame by creating a view.
+
+		df.createTempView("testview")
+		spark.sql("select * from testview").show()
+
+
+Microsoft Fabric:
+
+It is an all-in-one cloud based data analytics platform from Microsoft.
+
+It brings together data engineering, data integration, data warehoushing and real time analytics.
+
+
+
+In Microsoft Fabric,a workspace is a container where you organize and manage your data engineering projects and other fabric components.
+
+
+Spark Structured Streaming:
+
+Spark Structured Streaming deals with real time ,  unbounded data streams using same data frame and sql api that is used for batcch processing.
+
+Core components:
+
+Input Table:
+	Spark treats the continuous data stream as an "unbounded input table" where every new record arriving from a source acts as a newly appended row.
+
+Incremental Execution:
+	When  you write your query,  it will be treated as if it is a normal batch query on a static table.
+The spark engine  automatically converts and runs it increamentally as new data arrives.
+
+Input Source:
+	Read live data from systems like Apache Kafka, files, delta tables and etc.
+
+Trigger:
+	Control the timing of when spark checks for and processes new data (such as micro batches or continuous execution).
+
+Output modes:
+
+	Determine how the results are written to the destination.
+
+	Append Mode------------writes only newly added rows
+	Update Mode------------updates existing rows that changed.
+	Complete Mode----------Rewrites the entire result table.
+
+
+Sink:
+	Where processed data is written----file, table or stream like kafka
+
+
+input source-------------------------->spark structured streaming app-------------------->output sink
+kafka		extract			transform			load			file or db
+
+
+First example:
+
+input directory----------------------------------->spark structured streaming app---------->sink(console/file)
+(where new text files arrive continuously)		Detect and process new files
+
+Checkpoint:
+A checkpoint is a persistent storage that helps spark to remember a streaming query's progress  and recover after  a failure.
+
+
+
+
