@@ -1,0 +1,57 @@
+ETL----Extract Transform Load
+
+	Extract			Transform		Load
+Source------------------->Spark Structured Streaming App-------->Sink
+csv data			(transformation  functions) 	jsonformat
+
+
+
+
+
+
+Kafka:
+
+Message oriented middleware which can handle millions of data at a single point of time.
+
+
+sender--------->Kafka Topic----------->receiver
+
+kafka uses a service called zookeeper to maintain its meta data.
+
+
+
+
+
+	Extract			Transform		Load
+Source------------------->Spark Structured Streaming App-------->Sink
+kafka			(transformation  functions) 		csv data
+
+
+Microsoft Fabric:
+
+Workspace: 
+Workspace is a shared working area where you create, organize and manage all the resources belonging to a project.
+
+Lakehouse:
+
+A lakehouse is a unified data architecture and storage artifact that combines multi-storage format with query.
+
+In the fabric lakehouse, there are two important areas.
+
+Files---------raw files such as csv,json, parquet and etc
+Tables--------structured tables commonly stored in  a format called Delta format
+	
+Delta Format is a storage format built on top of Parquet  that adds features for ACID transaction.
+
+A---Atomicity
+C---Consistency
+I---Isolation
+D---Durability
+
+Notebook:
+A notebook is an interactive development environment where you write and execute code.
+The code may be  in the form of pyspark, python, spark sql or sccala.
+
+
+
+							

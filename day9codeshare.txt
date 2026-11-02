@@ -1,0 +1,190 @@
+https://github.com/psnirmala/pythonoct19th
+
+https://app.fabric.microsoft.com/
+
+
+/home/student/structureddataset/a.csv
+
+1001,Arjun,Developer,40000
+1002,Deva,Accountant,50000
+
+
+/home/student/structureddataset/b.csv
+
+1006,Akash,Developer,30000
+1007,Arjun,Accountant,28000
+1008,Suresh,Architect,60000
+
+
+/home/student/structureddataset/c.csv
+
+1003,Amar,Developer,45000
+1004,David,Accountant,38000
+
+
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import input_file_name,regexp_extract
+import time
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1").getOrCreate()
+empSchema=StructType([StructField("empid",IntegerType()),\
+                      StructField("name",StringType()) \
+                      ,StructField("designation",StringType()) \
+                      ,StructField("salary",DoubleType())])
+stream_df=spark.readStream.format("csv"). \
+    schema(empSchema). \
+    load("/home/student/structureddataset/etlcsvdata/")
+transfomed_df=stream_df.select("empid","name","salary").where("salary>40000")
+
+streaming_query=transfomed_df.writeStream.  \
+    option("truncate",False).\
+    option("checkpointLocation","/home/student/csv-checkpoint-2"). \
+    format("json") \
+    .option("path","/home/student/dataframe-out/etl-json-out-2") \
+    .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")
+
+https://archive.apache.org/dist/kafka/3.4.0/kafka_2.12-3.4.0.tgz
+
+
+
+
+ bin/zookeeper-server-start.sh config/zookeeper.properties
+ 
+ bin/kafka-server-start.sh config/server.properties
+ 
+bin/kafka-topics.sh --create --topic test-topic --bootstrap-server localhost:9092
+
+ bin/kafka-console-producer.sh --topic test-topic --bootstrap-server localhost:9092
+ 
+bin/kafka-console-consumer.sh --topic test-topic --bootstrap-server localhost:9092 --from-beginning
+
+ bin/kafka-topics.sh --create --topic emp-data-topic --bootstrap-server localhost:9092
+ 
+ 
+ 
+from pyspark.sql import SparkSession
+from pyspark.sql.types import *
+from pyspark.sql.functions import col,from_json
+import time
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1")\
+    .config("spark.jars.packages","org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0") \
+    .getOrCreate()
+empSchema=StructType([StructField("empid",IntegerType()),\
+                      StructField("name",StringType()) \
+                      ,StructField("designation",StringType()) \
+                      ,StructField("salary",DoubleType())])
+kafka_stream_df=spark.readStream.format("kafka"). \
+    option("kafka.bootstrap.servers","localhost:9092") . \
+    option("subscribe","emp-data-topic"). \
+    load()
+json_df=kafka_stream_df.select(col("value").cast("string").alias("json_data"))
+parsed_df= json_df.select(from_json(col("json_data"),empSchema).alias("emp")).select("emp.*")
+transfomed_df=parsed_df.select("empid","name","salary").where("salary>40000")
+
+streaming_query=transfomed_df.writeStream.  \
+    option("truncate",False).\
+    option("checkpointLocation","/home/student/csv-checkpoint-3"). \
+    format("csv") \
+    .option("path","/home/student/dataframe-out/etl-csv-out-1") \
+    .option("header",True) \
+    .trigger(processingTime="20 seconds").start()
+print("streaming query is started")
+time.sleep(5*60)
+streaming_query.stop()
+print("streaming query stopped")
+
+
+:~/kafka_2.12-3.4.0$ bin/kafka-console-producer.sh --topic emp-data-topic --bootstrap-server localhost:9092
+
+{"empid":12121,"name":"Arjun","designation":"Developer","salary":60000}
+{"empid":34333,"name":"Deva","designation":"Acccountant","salary":50000}
+{"empid":34334,"name":"Amar","designation":"Acccountant","salary":42000}
+
+
+data=[(1001,"Arvind","Developer"),(1002,"Deva","Accountant"),
+(1003,"Priya","Architect")]
+columns=["id","name","designation"]
+df=spark.createDataFrame(data,columns)
+df.show()
+
+df.write.format("delta").saveAsTable("employee")
+
+df.write.format("csv").option("header",True).save("Files/empcsvdata-1")
+
+c:/test/customer.json
+
+{"custid":2322,"name":"Akash","email":"akash@gmail.com"}
+{"custid":2323,"name":"Surya","email":"surya@hotmail.com"}
+{"custid":2324,"name":"Amar","email":"amar@yahoo.com"}
+
+
+create the following file c:\test\employee.csv
+
+id,name,designation
+3433,Raju,Developer
+2322,Arjun,Acccountant
+2321,Suresh,Architect
+3434,Amar,Developer
+2327,Deva,Acccountant
+2322,Kumar,Architect
+2329,Priya,Acccountant
+2382,Surya,Architect
+
+upload this file to the default lake house.
+Using microsoft fabric pyspark notebook,
+Create a dataframe from the content of  employee.csv
+Write all developers in delta table format to a table called developers.
+Write all accountants in json format to a directory called accountants.
+Write all architects in csv format to a directory called architects.
+
+
+Create a dataframe which contains the count of each designation.
+Write the content of this dataframe in parquet format to a directory called employeecountdata.
+
+
+Excercise code
+
+df = spark.read.format("csv").option("header","true").load("Files/PysparkTraining_FabricsTestData/employee.csv")
+# df now is a Spark DataFrame containing CSV data from "Files/PysparkTraining_FabricsTestData/employee.csv".
+display(df)
+
+df_dev=df.filter("designation == 'Developer'")
+df_Acct=df.filter("designation == 'Acccountant'")
+df_Arch=df.filter("designation == 'Architect'")
+
+df_dev.write.format("delta").mode("overwrite").saveAsTable("developers")
+df_Acct.write.format("json").option("header",True).save("Files/accountants")
+df_Arch.write.format("csv").option("header",True).save("Files/architects")
+
+df_parquet=df.groupBy("designation").count()
+df_parquet.write.format("parquet").save("Files/employeecountdata")
+
+c:/test/emp_dept.csv
+
+
+id,name,designation,dept_id
+3433,Raju,Developer,501
+2322,Arjun,Acccountant,502
+2321,Suresh,Architect,501
+3434,Amar,Developer,501
+2327,Deva,Acccountant,502
+2322,Kumar,Architect,503
+2329,Priya,Acccountant,502
+2382,Surya,Architect,503
+
+
+df = spark.read.format("csv").option("header","true").load("Files/empdeptdata/emp_dept.csv")
+# df now is a Spark DataFrame containing CSV data from "Files/empdeptdata/emp_dept.csv".
+df.write.format("delta").saveAsTable("empdeptdata")
+
+
+c:/test/dept.json
+
+{"id":501,"department":"Systems"}
+{"id":502,"department":"Finance"}
+{"id":503,"department":"Infrastructure"}
