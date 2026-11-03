@@ -1,0 +1,197 @@
+https://github.com/psnirmala/pythonoct19th
+
+https://app.fabric.microsoft.com/
+
+
+emp_dept_df=spark.read.table("dbo.empdeptdata")
+emp_dept_df.show()
+
+dept_df=spark.read.json("Files/deptdata/dept.json")
+dept_df.show()
+
+
+join_df=emp_dept_df.join(dept_df,emp_dept_df.dept_id==dept_df.id,"inner").drop(dept_df.id)
+join_df.show()
+
+
+# Welcome to your new notebook
+# Type here in the cell editor to add code!
+print("testing notebook")
+print("this notebook will be  executed by a pipeline")
+
+c:\test\employee_data.csv
+
+id,name,designation,salary
+3433,Raju,Developer,50000
+2322,Arjun,Acccountant,45000
+2321,Suresh,Architect,80000
+3434,Priya,Developer,51000
+2323,Amar,Acccountant,46000
+2329,Surya,Architect,82000
+
+
+# Welcome to your new notebook
+# Type here in the cell editor to add code!
+emp_df=spark.read.format("csv").option("header",True).option("inferSchema",True) \
+.load("Files/emprawdata/employee_data.csv")
+display(emp_df)
+
+
+
+from pyspark.sql.functions import col
+clean_emp_df=emp_df.dropDuplicates()
+transformed_df=clean_emp_df.withColumn("annual_salary",col("salary")*12)
+print("transformed data")
+display(transformed_df)
+
+transformed_df.write.format("delta")\
+.mode("overwrite")\
+.saveAsTable("dbo.employeewithannualsalary")
+
+dftuningtest.py
+
+from pyspark.sql.functions import *
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1")\
+    .config("spark.jars.packages","org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0") \
+    .getOrCreate()
+large_df=(
+    spark.range(0,100000)
+    .withColumn("department",
+                when(col("id")%4==0,"IT")
+                .when(col("id")%4==1,"HR")
+                .when(col("id")%4==2,"Finance")
+                .otherwise("Sales")
+    )
+    .withColumn("salary",(col("id")%50)+20000)
+
+)
+print("Records:",large_df.count())
+print("Partitions: ",large_df.rdd.getNumPartitions())
+large_df.show(10)
+
+from pyspark.sql.functions import *
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1")\
+    .config("spark.jars.packages","org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0") \
+    .getOrCreate()
+large_df=(
+    spark.range(0,100000)
+    .withColumn("department",
+                when(col("id")%4==0,"IT")
+                .when(col("id")%4==1,"HR")
+                .when(col("id")%4==2,"Finance")
+                .otherwise("Sales")
+    )
+    .withColumn("salary",(col("id")%50)+20000)
+
+)
+#print("Records:",large_df.count())
+#print("Partitions: ",large_df.rdd.getNumPartitions())
+#large_df.show(10)
+#unoptimized  code
+import time
+start=time.time()
+df1=large_df.select("*")
+df2=df1.withColumn("salary_category",
+                   when(col("salary")>30000,"HIGH")
+                   .otherwise("LOW")
+)
+df3=df2.where(col("salary")>30000)
+df3.show()   
+end=time.time()                
+print("execution time:",end-start)
+
+from pyspark.sql.functions import *
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1")\
+    .config("spark.jars.packages","org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0") \
+    .getOrCreate()
+large_df=(
+    spark.range(0,100000)
+    .withColumn("department",
+                when(col("id")%4==0,"IT")
+                .when(col("id")%4==1,"HR")
+                .when(col("id")%4==2,"Finance")
+                .otherwise("Sales")
+    )
+    .withColumn("salary",(col("id")%50)+20000)
+
+)
+#print("Records:",large_df.count())
+#print("Partitions: ",large_df.rdd.getNumPartitions())
+#large_df.show(10)
+#unoptimized  code
+import time
+start=time.time()
+df1=large_df.select("*")
+df2=df1.withColumn("salary_category",
+                   when(col("salary")>30000,"HIGH")
+                   .otherwise("LOW")
+)
+df3=df2.where(col("salary")>30000)
+end=time.time()                
+print("execution time:",end-start)
+start=time.time()
+df3=large_df.where(col("salary")>30000).select("*")
+  
+end=time.time()                
+print("execution time:",end-start)
+
+
+filtered_df=large_df.where(col("salary">50000)
+filtered_df.count()
+filtered_df.groupBy("designattion").count().show()
+filtered_df.groupBy("designattion").avg("salary").show()
+
+from pyspark.sql.functions import *
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName("structured-streaming-csv-app-1")\
+    .config("spark.jars.packages","org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0") \
+    .getOrCreate()
+large_df=(
+    spark.range(0,100000)
+    .withColumn("department",
+                when(col("id")%4==0,"IT")
+                .when(col("id")%4==1,"HR")
+                .when(col("id")%4==2,"Finance")
+                .otherwise("Sales")
+    )
+    .withColumn("salary",(col("id")%50)+20000)
+
+)
+import time
+filtered_df=large_df.where(col("salary")>50000)
+start=time.time()
+
+filtered_df.count()
+filtered_df.groupBy("department").count().show()
+filtered_df.groupBy("department").avg("salary").show()
+
+
+end=time.time()                
+print("execution time:",end-start)
+filtered_df=large_df.where(col("salary")>50000).cache()
+start=time.time()
+
+filtered_df.count()
+filtered_df.groupBy("department").count().show()
+filtered_df.groupBy("department").avg("salary").show()
+
+
+end=time.time()                
+print("execution time:",end-start)
+
+
+Post Test Link:
+    
+    https://forms.cloud.microsoft/r/5rcdkvpjDd
+    
+    
+
+Feedback  Link:
+    
+    https://survey.zohopublic.com/zs/TSCZlO 
+    
+    periasamy.subramanian@gmail.com
+    98803 72634

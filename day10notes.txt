@@ -1,0 +1,48 @@
+Pipeline:
+
+A pipeline in microsoft fabric is a tool used to automate and orchestrate data-related rasks.
+
+In a layman's term, a pipeline acts as a manager that controls the execution of different activites in a particular order.
+
+
+
+extract: read employee data from a csv file
+transform: remove duplicate records, filter invalid records and calculate annual salary
+load: save the transformed data into a delta table
+
+
+
+
+
+
+csvdata--------->tranform-------------->delta table
+
+Pyspark Fine Tuning:
+
+Spark internally performs:
+
+1.  Driver receives the query
+2.  Spark creates a logical execution plan
+3.  Catalyst Optimizer optimizes the plan
+4.  Physical execution plan is generated
+5.  Jobs are divided into stages.
+6.  Stages execute tasks on partitions.
+7.  Results are returned to driver
+
+Caching:
+
+without caching:
+filtered_df=large_df.where(col("salary">50000)
+filtered_df.count()
+filtered_df.groupBy("designattion").count().show()
+filtered_df.groupBy("designattion").avg("salary").show()
+
+with caching:
+filtered_df=large_df.where(col("salary">50000).cache()
+filtered_df.count()
+filtered_df.groupBy("designattion").count().show()
+filtered_df.groupBy("designattion").avg("salary").show()
+
+The first action materializes the cache. Subsequent operations can reuse it.
+
+

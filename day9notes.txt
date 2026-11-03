@@ -50,7 +50,7 @@ D---Durability
 
 Notebook:
 A notebook is an interactive development environment where you write and execute code.
-The code may be  in the form of pyspark, python, spark sql or sccala.
+The code may be  in the form of pyspark, python, spark sql or scala.
 
 
 
